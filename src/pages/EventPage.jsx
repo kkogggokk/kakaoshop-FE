@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; // useEffect 추가
 import "../styles/eventpage.css";
 import firstImage from "../assets/images/products/firstimage.webp";
 import saleProduct1 from "../assets/images/products/saleproducts1.webp";
@@ -15,6 +15,10 @@ import saleProduct12 from "../assets/images/products/saleproducts12.webp";
 import couponImage from "../assets/images/products/negowang.webp";
 
 const EventPage = () => {
+  const [userId, setUserId] = useState(null);                         //userId  상태 추가
+  const REACT_APP_SHOP_API_URL = process.env.REACT_APP_SHOP_API_URL;     // kakaoshop-API
+  const REACT_APP_API_COUPON_URL = process.env.REACT_APP_API_COUPON_URL; // coupon-API
+
   const saleImages = [
     [saleProduct1, 70],
     [saleProduct2, 51],
@@ -44,36 +48,55 @@ const EventPage = () => {
     return null;
   }
 
-  // 이메일을 userId로 변환하는 함수
-  // function emailToUserId(email) {
-  //   let hash = 0;
-  //   for (let i = 0; i < email.length; i++) {
-  //     const char = email.charCodeAt(i);
-  //     hash = (hash << 5) - hash + char;
-  //     hash |= 0; // 32bit 정수로 변환
-  //   }
-  //   // console.log("Hashed email (userId):", hash); // hash 로그 출력
-  //   return Math.abs(hash); // 음수 방지를 위해 절댓값 사용
-  // }
+  // 이메일로 userId 가져오기
+  async function getUserIdByEmail(email) {
+    try {
+      const response = await fetch(`${REACT_APP_SHOP_API_URL}/find-id`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("사용자 ID 조회 실패");
+      }
+
+      const data = await response.json();
+      return data.userId; // API가 반환하는 userId 값
+    } catch (error) {
+      console.error("Error fetching userId:", error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    const email = getCookieValue("email");
+    if (email) {
+      getUserIdByEmail(decodeURIComponent(email)).then((id) => {
+        setUserId(id);
+      });
+    }
+  }, []);
+
 
   // 쿠폰버튼 클릭 시 실행
   async function handleButtonClick(couponId) {
-    const API_URL = process.env.REACT_APP_API_COUPON_URL;
     const token = getCookieValue("token");
-    const email = getCookieValue("email");
 
-    if (!token || !email) {
+    if (!token || !userId) {
       alert("로그인 후 이용 가능합니다");
       return;
     }
 
-    const userId = 1; // admin@mail.com userId=1
+    // const userId = 1; // admin@mail.com userId=1
     // const userId = emailToUserId(decodeURIComponent(email)); // email을 userId로 변환
     console.log("User ID:", userId, "type: ", typeof(userId)); // userId 로그 출력, 형태 확인
 
     try {
       // 쿠폰 발급 요청
-      const response = await fetch(`${API_URL}/v2/issue-async`, {
+      const response = await fetch(`${REACT_APP_API_COUPON_URL}/v2/issue-async`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
