@@ -37,42 +37,43 @@ const EventPage = () => {
   ];
 
   // 쿠키에서 특정 값을 가져오는 함수
-  function getCookieValue(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-  }
+  // function getCookieValue(name) {
+  //   const value = `; ${document.cookie}`;
+  //   const parts = value.split(`; ${name}=`);
+  //   if (parts.length === 2) return parts.pop().split(';').shift();
+  //   return null;
+  // }
 
   // 이메일을 userId로 변환하는 함수
-  function emailToUserId(email) {
-    let hash = 0;
-    for (let i = 0; i < email.length; i++) {
-      const char = email.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash |= 0; // 32bit 정수로 변환
-    }
-    // console.log("Hashed email (userId):", hash); // hash 로그 출력
-    return Math.abs(hash); // 음수 방지를 위해 절댓값 사용
-  }
+  // function emailToUserId(email) {
+  //   let hash = 0;
+  //   for (let i = 0; i < email.length; i++) {
+  //     const char = email.charCodeAt(i);
+  //     hash = (hash << 5) - hash + char;
+  //     hash |= 0; // 32bit 정수로 변환
+  //   }
+  //   // console.log("Hashed email (userId):", hash); // hash 로그 출력
+  //   return Math.abs(hash); // 음수 방지를 위해 절댓값 사용
+  // }
 
   // 쿠폰버튼 클릭 시 실행
   async function handleButtonClick(couponId) {
     const API_URL = process.env.REACT_APP_API_COUPON_URL;
-    const token = getCookieValue("token");
-    const email = getCookieValue("email");
+    // const token = getCookieValue("token");
+    // const email = getCookieValue("email");
 
-    if (!token || !email) {
-      alert("로그인 후 이용 가능합니다");
-      return;
-    }
+    // if (!token || !email) {
+    //   alert("로그인 후 이용 가능합니다");
+    //   return;
+    // }
 
-    const userId = emailToUserId(decodeURIComponent(email)); // email을 userId로 변환
+    const userId = 1; // admin@mail.com userId=1
+    // const userId = emailToUserId(decodeURIComponent(email)); // email을 userId로 변환
     console.log("User ID:", userId, "type: ", typeof(userId)); // userId 로그 출력, 형태 확인
 
     try {
       // 쿠폰 발급 요청
-      const response = await fetch(`${API_URL}/v1/issue`, {
+      const response = await fetch(`${API_URL}/v2/issue-async`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
