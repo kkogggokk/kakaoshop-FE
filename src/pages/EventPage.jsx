@@ -37,12 +37,12 @@ const EventPage = () => {
   ];
 
   // 쿠키에서 특정 값을 가져오는 함수
-  // function getCookieValue(name) {
-  //   const value = `; ${document.cookie}`;
-  //   const parts = value.split(`; ${name}=`);
-  //   if (parts.length === 2) return parts.pop().split(';').shift();
-  //   return null;
-  // }
+  function getCookieValue(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
 
   // 이메일을 userId로 변환하는 함수
   // function emailToUserId(email) {
@@ -59,13 +59,13 @@ const EventPage = () => {
   // 쿠폰버튼 클릭 시 실행
   async function handleButtonClick(couponId) {
     const API_URL = process.env.REACT_APP_API_COUPON_URL;
-    // const token = getCookieValue("token");
-    // const email = getCookieValue("email");
+    const token = getCookieValue("token");
+    const email = getCookieValue("email");
 
-    // if (!token || !email) {
-    //   alert("로그인 후 이용 가능합니다");
-    //   return;
-    // }
+    if (!token || !email) {
+      alert("로그인 후 이용 가능합니다");
+      return;
+    }
 
     const userId = 1; // admin@mail.com userId=1
     // const userId = emailToUserId(decodeURIComponent(email)); // email을 userId로 변환

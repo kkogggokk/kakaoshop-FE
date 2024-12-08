@@ -14,22 +14,22 @@ const MainProductTemplate = () => {
   const [isEnd, setIsEnd] = useState(false);
 
   const { data, error, isLoading } = useQuery(`/products?page=${page}`, () =>
-    fetchProducts(page)
+      fetchProducts(page)
   );
 
   useEffect(() => {
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isEnd) {
-            setPage((page) => page + 1);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 1,
-      }
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isEnd) {
+              setPage((page) => page + 1);
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 1,
+        }
     );
 
     const currentObserver = bottomObserver.current;
@@ -46,9 +46,9 @@ const MainProductTemplate = () => {
 
   const MAX_RESPONSE_COUNT = 9;
   useEffect(() => {
-    if (!isLoading && !!data) {
+    if (!isLoading && data?.data?.response) {
       setProducts((prevProducts) =>
-        _.uniqBy([...prevProducts, ...data.data.response], "id")
+          _.uniqBy([...prevProducts, ...data.data.response], "id")
       );
       if (data.data.response.length < MAX_RESPONSE_COUNT) setIsEnd(true);
     }
@@ -62,10 +62,10 @@ const MainProductTemplate = () => {
     return <ErrorTypo />;
   }
   return (
-    <Container className="w-full px-24 py-16 m-auto">
-      <ProductGrid products={products} isLoading={isLoading} />
-      <div ref={bottomObserver}></div>
-    </Container>
+      <Container className="w-full px-24 py-16 m-auto">
+        <ProductGrid products={products || []} isLoading={isLoading} />
+        <div ref={bottomObserver}></div>
+      </Container>
   );
 };
 
