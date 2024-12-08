@@ -4,11 +4,11 @@ COPY package.json package-lock.json ./
 
 # env.local
 #ENV REACT_APP_API_PATH=http://localhost
-#ENV REACT_APP_API_COUPON_URL=http://coupon-api:8080
+#ENV REACT_APP_COUPON_API_URL=http://coupon-api:8080
 
 # env.prod 환경 : 백엔드 API 서버 주소 - shop-back ALB endpoint
 ENV REACT_APP_API_PATH=http://k8s-default-shopback-c8447eb4cd-128335560.ap-northeast-2.elb.amazonaws.com
-ENV REACT_APP_API_COUPON_URL=http://k8s-default-couponap-acba0908a2-1422117942.ap-northeast-2.elb.amazonaws.com
+ENV REACT_APP_COUPON_API_URL=http://k8s-default-couponap-acba0908a2-1422117942.ap-northeast-2.elb.amazonaws.com
 
 RUN npm ci
 COPY . .

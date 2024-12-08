@@ -17,7 +17,7 @@ import couponImage from "../assets/images/products/negowang.webp";
 const EventPage = () => {
   const [userId, setUserId] = useState(null);                         //userId  상태 추가
   const REACT_APP_SHOP_API_URL = process.env.REACT_APP_SHOP_API_URL;     // kakaoshop-API
-  const REACT_APP_API_COUPON_URL = process.env.REACT_APP_API_COUPON_URL; // coupon-API
+  const REACT_APP_COUPON_API_URL = process.env.REACT_APP_COUPON_API_URL; // coupon-API
 
   const saleImages = [
     [saleProduct1, 70],
@@ -90,13 +90,11 @@ const EventPage = () => {
       return;
     }
 
-    // const userId = 1; // admin@mail.com userId=1
-    // const userId = emailToUserId(decodeURIComponent(email)); // email을 userId로 변환
     console.log("User ID:", userId, "type: ", typeof(userId)); // userId 로그 출력, 형태 확인
 
     try {
       // 쿠폰 발급 요청
-      const response = await fetch(`${REACT_APP_API_COUPON_URL}/v2/issue-async`, {
+      const response = await fetch(`${REACT_APP_COUPON_API_URL}/v2/issue-async`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
