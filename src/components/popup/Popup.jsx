@@ -5,20 +5,6 @@ const Popup = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const staticServerUri = process.env.REACT_APP_PATH || "";
-  // useEffect(() => {
-  //   const dontShowToday = localStorage.getItem("dontShowToday");
-  //   const savedDate = localStorage.getItem("dontShowDate");
-
-  //   if (dontShowToday && savedDate) {
-  //     const currentDate = new Date().toISOString().split("T")[0]; // 오늘 날짜
-  //     if (currentDate === savedDate) {
-  //       onClose();
-  //     } else {
-  //       localStorage.removeItem("dontShowToday");
-  //       localStorage.removeItem("dontShowDate");
-  //     }
-  //   }
-  // }, [onClose]);
   const onClickEventPage = (e) => {
     e.preventDefault();
     window.location.href = `${staticServerUri}/event`;
@@ -31,12 +17,6 @@ const Popup = ({ isOpen, onClose }) => {
     }
   };
 
-  // const handleDontShowToday = () => {
-  //   const today = new Date().toISOString().split("T")[0];
-  //   localStorage.setItem("dontShowToday", "true");
-  //   localStorage.setItem("dontShowDate", today);
-  //   onClose();
-  // };
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>

@@ -46,7 +46,7 @@ const MainProductTemplate = () => {
 
   const MAX_RESPONSE_COUNT = 9;
   useEffect(() => {
-    if (!isLoading && !!data) {
+    if (!isLoading && data?.data?.response) {
       setProducts((prevProducts) =>
         _.uniqBy([...prevProducts, ...data.data.response], "id")
       );
@@ -61,10 +61,9 @@ const MainProductTemplate = () => {
   if (error) {
     return <ErrorTypo />;
   }
-
   return (
     <Container className="w-full px-24 py-16 m-auto">
-      <ProductGrid products={products} isLoading={isLoading} />
+      <ProductGrid products={products || []} isLoading={isLoading} />
       <div ref={bottomObserver}></div>
     </Container>
   );
