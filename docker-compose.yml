@@ -1,0 +1,20 @@
+---
+services:
+  kakao-fe:
+    image: kakao-fe:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: kakao-fe
+    networks:
+      - coupon-network
+    ports:
+      - "80:80"
+    environment:
+      REACT_APP_SHOP_API_URL: http://kakao-be:8080
+      REACT_APP_COUPON_API_URL: http://coupon-api:8081
+
+networks:
+  coupon-network:
+    name: coupon-network  # 명시적으로 네트워크 이름 설정
+    external: true        # Compose가 해당 네트워크를 외부 네트워크로 인식하도록 설정

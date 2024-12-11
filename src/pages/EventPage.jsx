@@ -15,9 +15,9 @@ import saleProduct12 from "../assets/images/products/saleproducts12.webp";
 import couponImage from "../assets/images/products/negowang.webp";
 
 const EventPage = () => {
-  const [userId, setUserId] = useState(null);                         //userId  상태 추가
-  const REACT_APP_SHOP_API_URL = process.env.REACT_APP_SHOP_API_URL;     // kakaoshop-API
-  const REACT_APP_COUPON_API_URL = process.env.REACT_APP_COUPON_API_URL; // coupon-API
+  const [userId, setUserId] = useState(null);                             //userId  상태 추가
+  const REACT_APP_SHOP_API_URL = process.env.REACT_APP_SHOP_API_URL;      // kakaoshop-API
+  const REACT_APP_COUPON_API_URL = process.env.REACT_APP_COUPON_API_URL;  // coupon-API
 
   const saleImages = [
     [saleProduct1, 70],
