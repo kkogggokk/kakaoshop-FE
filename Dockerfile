@@ -15,5 +15,12 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 COPY ./default.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Nginx Exporter 설치
+RUN apk add --no-cache curl \
+    && curl -L https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v1.4.0/nginx-prometheus-exporter_1.4.0_linux_arm64.tar.gz \
+    | tar -xz -C /usr/local/bin \
+    && mv /usr/local/bin/nginx-prometheus-exporter /usr/local/bin/nginx-exporter
+
+EXPOSE 80 9113
+CMD ["sh", "-c", "nginx -g 'daemon off;' & nginx-exporter -nginx.scrape-uri=http://127.0.0.1/nginx_status"]
